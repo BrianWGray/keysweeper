@@ -1,3 +1,5 @@
+Initial Code (poorly 'forked') from Sammy Kamkar - https://github.com/samyk/keysweeper
+
 Library sources included in this directory for lab distribution purposes.
 
 adafruit TinyFlash: https://github.com/adafruit/Adafruit_TinyFlash/
