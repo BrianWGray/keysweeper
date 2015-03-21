@@ -28,6 +28,23 @@
  - http://www.remote-exploit.org/articles/keykeriki_v2_0__8211_2_4ghz/
  - http://goodfet.sourceforge.net/clients/goodfetnrf/
  
+ 
+ 
+ */
+
+/*
+ 
+  Minor Modifications for SteelCity Infosec Labs - Brian W. Gray
+ 
+ -
+ -
+ -
+ -
+ -
+ -
+ 
+ 
+ 
  */
 
 /*
@@ -107,7 +124,7 @@ void setTriggers()
 
 // uncomment #define FLASH if you are using an SPI Flash module to log data
 // I'm specifically using the 8mbit W25Q80BV
-#define FLASH
+//#define FLASH
 
 // only enable if you want this to connect to a KeySweeper
 // rather than look for the keyboard itself. this is useful
