@@ -1,3 +1,4 @@
+
 Initial Code (poorly 'forked') from Sammy Kamkar - https://github.com/samyk/keysweeper
 
 Library sources included in this directory for lab distribution purposes.
@@ -16,6 +17,10 @@ https://github.com/maniacbug/RF24/blob/master/RF24.cpp
 
 
 Resource Links: [Section to be improved - BWG]
+
+Unofficial download for Arduino SDK - [should be faster than from arduino.cc]
+http://ctrlu.net/hackpgh/keysweeper/
+
 
 Standard Pinout for Nrf24L01+
 http://arduino-info.wikispaces.com/Nrf24L01-2.4GHz-HowTo
