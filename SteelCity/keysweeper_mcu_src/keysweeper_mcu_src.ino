@@ -217,7 +217,7 @@ char imei[15] = {
 //#define E_FIRST_RUN  0x07 // 1 byte 
 
 #ifdef FLASH
-#include <Adafruit_TinyFlash.h>
+#include "Adafruit_TinyFlash.h"
 
 // 256 bytes per page of flash
 #define FLASHPAGE 256
