@@ -64,7 +64,7 @@ MAC = 0xA8EE9A90CDLL
 
 Minor Modifications for SteelCity Infosec Labs - Brian W. Gray
 
--
+- Modified rf24 and adafruit flash libary calls to come from within the keysweeper directory
 -
 -
 -
