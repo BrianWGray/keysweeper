@@ -868,7 +868,9 @@ void scan()
       {
         radio.read(&p, PKT_SIZE);
 
-        if (p[4] == 0xCD)
+        // Commented out for Steel City InfoSec and replaced with if (1)
+        if (1)
+        // if (p[4] == 0xCD)
         {
           sp("Potential keyboard: ");
           for (int j = 0; j < 8; j++)
